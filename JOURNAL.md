@@ -5,7 +5,33 @@ description: "A cuboid smart assistant"
 created_at: "2025-06-17"
 ---
 
-**Total time spent on project: 1.5h**
+**Total time spent on project: 6.5h**
+
+### June 29th: Redesign, redesign
+
+I worked into the wee hours of midnight this morning and yesterday afternoon to fix a bunch of small things and add a few small
+things to the project. There's a lot of changes (since it was around 5h worth of work), so here's a quick list of everything that
+changed from the last devlog:
+
+- Changed speaker grills to be alternating so that they would allow for more airflow
+- Added in SparkFun USB C Horizontal Connector breakout board, and a slot and screws for it in the case
+- Designed a speaker enclosure from scratch so that the speaker can sound better and be sealed
+- Redesigned the top cutout design to accomodate for a larger light strip, larger buttons, and mic grills
+- Made the side grills not penetrate the enclosure, so you can't see inside and the design is more consistent overall
+- Fixed everything else to still fit in the enclosure (ie getting larger screws, moving around mounting points, making cutout slots)
+
+Out of all of the above bullet points, the speaker enclosure in particular took quite a bit of time, as I tried to make it as big
+as practically possible without it stealing space for other components. The top cutout design also took a little bit of trial and
+error, as I experimented with different strip lengths, spacings, and button sizes. I also couldn't find a CAD model for the longest
+time for the SparkFun USB C breakout board, so I had to open and fix the Eagle files with a correct USB C footprint and export it
+to get a STEP file for the assembly. Took way longer than I expected (and probably than it should have), since I really, _really_
+wanted to get the placement of the actual USB C receptacle right to make a precise cutout in the enclosure case.
+
+It's slowly starting to get finished!
+
+![Updated CAD Picture](assets/cad-ss-4.png)
+
+**Total time spent: 5h**
 
 ## June 17th: Start!
 
