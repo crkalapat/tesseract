@@ -2,10 +2,12 @@
 title: "Tesseract"
 author: "crkalapat"
 description: "A cuboid smart assistant"
-created_at: "2025-06-17"
+created_at: "2026-06-17"
 ---
 
 **Total time spent on project: 6.5h**
+
+_Note: All journal entries from June 24 - 28 were retroactively added from Hack Club's Stardance Platform_
 
 ### June 29th: Redesign, redesign
 
@@ -29,9 +31,57 @@ wanted to get the placement of the actual USB C receptacle right to make a preci
 
 It's slowly starting to get finished!
 
-![Updated CAD Picture](assets/cad-ss-4.png)
+![5th CAD Picture](assets/cad-ss-4.png)
 
 **Total time spent: 5h**
+
+## June 27th: Designing the PCB
+
+After a (very tragic) discovery that basically nobody online sells 2x9 or 2x10 JST connectors, I updated my schematic to use 2 1x10
+or 1x9 JST XH connectors for the connections to the OLED display and RPI Zero 2W. I found footprints for all my symbols, finished
+the schematic, and started the PCB layout process. Turns out that JST sockets are pretty big (relatively speaking). I did some layout
+work, and now I have a rough sense of where everything will go (see pic below), but I still need to finalize all the positions in CAD
+so everything is precise and lines up. Although I wanted to keep the PCB as small as I could, something tells me that I might have
+to make it bigger to allow for more room and spacing for components.
+
+![1st PCB Picture](assets/pcb-ss-1.png)
+
+**Total time spent: 1.73h**
+
+## June 26th: Schematic Time
+
+Decided to take a break from the CAD to focus on designing a PCB that will serve as a middle man between the Pi and the other
+electronics. I finished most of the schematic (still need to add LEDs), and had to do a fair share of datasheet reading in order to
+figure out what to wire to what. Right now the schematic has a speaker IC, two microphones, a display connector, a giant connector to
+the Raspberry Pi (which I plan to separate at the endpoint into individual wires), 4 push buttons, and lots of decoupling capacitors.
+I haven’t decided fully on footprints for some symbols (like the connectors), but I’m leaning right now towards JST connectors so
+that the inside of the cube is not a messy wire spaghetti. _ Fingers crossed _ this schematic doesn’t lead to me making a broken PCB.
+
+![4th CAD Picture](assets/schem-ss-1.png)
+
+**Total time spent: 1.68h**
+
+## June 25th: Cutouts
+
+Moved the Raspberry Pi Zero 2W from being mounted on the ceiling to being mounted with standoffs above the speaker. In the process,
+I also modified the speaker mount that I made last time to use threaded inserts so the case could be 3D printed easier. After this,
+I wanted the cube to look better, so I added some cutouts on the sides for LEDs, buttons, and for the microphone. Finally, I ended
+this session by rounding all the corners ever so slightly with a 1mm fillet, so it won’t be as sharp to touch.
+
+![3rd CAD Picture](assets/cad-ss-3.png)
+
+**Total time spent: 1.67h**
+
+## June 24th: Adding the Speaker
+
+I realized that I needed space to have rubber feet (so that the downward firing speaker’s audio isn’t muffled), so I had to redesign
+the speaker grill to be smaller. I added in some rubber feet once that was done and there was room. In the process, I also decided
+to use the rubber feet’s screws as a way to screw the display cover and the rest of the enclosure. Finally, I went on Mouser and
+found a pretty good fitting speaker for the case, and I mounted it inside the cube with some M3 screws and nuts.
+
+![2nd CAD Picture](assets/cad-ss-2.png)
+
+**Total time spent: 1.83h**
 
 ## June 17th: Start!
 
