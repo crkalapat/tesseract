@@ -5,9 +5,24 @@ description: "A cuboid smart assistant"
 created_at: "2026-06-17"
 ---
 
-**Total time spent on project: 6.5h**
+**Total time spent on project: 16.41h**
 
 _Note: All journal entries from June 24 - 28 were retroactively added from Hack Club's Stardance Platform_
+
+## June 30th: PCB Placement
+
+I managed to finalize the layout of the PCB today, and the schematic as well. This took longer than I expected, as I had to
+constantly go back and forth tweaking both the cutouts of the top of Tesseract in CAD, and tweaking the size of the top strips
+in order for everything to fit on the PCB. My original design had the buttons too close to the edge of the cube case, which
+essentially required me to have the buttons less than 0.3 mm away from the edge of the PCB. I also changed the middle strip cutout
+to fit in a 2" x 2" acrylic square, which I found a sample online for $1. It took a few tries, but eventually I just succumbed to
+making the PCB take up as much of the available space on the top (which is why it now looks like a square). I collected dimensions
+from CAD to move the microphones and buttons exactly where they need to be in KiCad. Finally, I wanted to add silkscreen text so I
+know which wire goes to which wire during assembly, so I started on that before eventually calling it a day. Once the silkscreen pin labels are done though, it's off to routing!
+
+![Updated PCB Image](assets/pcb-ss-2.png)
+
+**Total time spent: 3h**
 
 ### June 29th: Redesign, redesign
 
