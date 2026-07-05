@@ -5,9 +5,30 @@ description: "A cuboid smart assistant"
 created_at: "2026-06-17"
 ---
 
-**Total time spent on project: 16.41h**
+**Total time spent on project: 18.41h**
 
 _Note: All journal entries from June 24 - 28 were retroactively added from Hack Club's Stardance Platform_
+
+## July 3rd: PCB Routing
+
+I finished up adding labels to all the pins on the front of the PCB with silkscreen text. After that was done though, I got to
+routing the board. What I realized though midway through routing was that I actually forgot to include a 3V3 line from the
+Raspberry Pi Zero 2W on the PCB, so I added that to the schematic JST connector that has all the power connections to the RPI.
+Once that was fixed and routing was done, I went back and forth with Design Rules Checker, only to find that the circle pad for
+the microphones (which should be connected to GND) was sort of broken. Instead of the whole ring being GND in KiCad, only a small
+square on the edge is considered as the "pin". I ignored this though and still routed a trace to the entire ring, which promptly
+gave me a lot of errors from DRC. It should be fine, so I tried to exclude as many of the circle-pad related errors, but there's
+still 3 that persist despite my best whack-a-mole efforts. I could try and fix it, but at this point it's faster to just ignore the
+"errors" in DRC.
+
+Apart from the microphone pad issues, the PCB is basically done at this point. All that is left is adding slots for the LED chamber
+that I plan to mount on top of the PCB. I currently have a hole on the left of the PCB so that the JST connector from the LED can
+be connected on the backside of the board, and I also have two M3 screw holes so that the chamber itself can be mounted to the PCB.
+All that's to say, I just need to finalize the screw holes and wire hole for the LED chamber, and the PCB will be officially complete.
+
+![Updated PCB Image](assets/pcb-ss-3.png)
+
+**Total time spent: 2h**
 
 ## June 30th: PCB Placement
 

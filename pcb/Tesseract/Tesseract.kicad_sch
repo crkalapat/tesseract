@@ -6069,7 +6069,7 @@
 	)
 	(symbol
 		(lib_id "power:+5V")
-		(at 133.35 110.49 90)
+		(at 133.35 107.95 90)
 		(unit 1)
 		(exclude_from_sim no)
 		(in_bom yes)
@@ -6078,7 +6078,7 @@
 		(fields_autoplaced yes)
 		(uuid "676d2fcb-fb69-4450-b754-1f00e4b8accf")
 		(property "Reference" "#PWR035"
-			(at 137.16 110.49 0)
+			(at 137.16 107.95 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -6087,7 +6087,7 @@
 			)
 		)
 		(property "Value" "+5V"
-			(at 129.54 110.4899 90)
+			(at 129.54 107.9499 90)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -6096,7 +6096,7 @@
 			)
 		)
 		(property "Footprint" ""
-			(at 133.35 110.49 0)
+			(at 133.35 107.95 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -6105,7 +6105,7 @@
 			)
 		)
 		(property "Datasheet" ""
-			(at 133.35 110.49 0)
+			(at 133.35 107.95 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -6114,7 +6114,7 @@
 			)
 		)
 		(property "Description" "Power symbol creates a global label with name \"+5V\""
-			(at 133.35 110.49 0)
+			(at 133.35 107.95 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -6480,7 +6480,7 @@
 		)
 	)
 	(symbol
-		(lib_id "Connector:Conn_01x02_Socket")
+		(lib_id "Connector:Conn_01x03_Socket")
 		(at 138.43 110.49 0)
 		(unit 1)
 		(exclude_from_sim no)
@@ -6490,7 +6490,7 @@
 		(fields_autoplaced yes)
 		(uuid "7ecedf56-57ad-42a9-b04e-9df54c0bbede")
 		(property "Reference" "J4"
-			(at 139.7 110.4899 0)
+			(at 139.7 109.2199 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -6499,7 +6499,7 @@
 			)
 		)
 		(property "Value" "RPI Power Connector"
-			(at 139.7 113.0299 0)
+			(at 139.7 111.7599 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -6507,7 +6507,7 @@
 				(justify left)
 			)
 		)
-		(property "Footprint" "Connector_JST:JST_XH_B2B-XH-A_1x02_P2.50mm_Vertical"
+		(property "Footprint" "Connector_JST:JST_XH_B3B-XH-A_1x03_P2.50mm_Vertical"
 			(at 138.43 110.49 0)
 			(effects
 				(font
@@ -6525,7 +6525,7 @@
 				(hide yes)
 			)
 		)
-		(property "Description" "Generic connector, single row, 01x02, script generated"
+		(property "Description" "Generic connector, single row, 01x03, script generated"
 			(at 138.43 110.49 0)
 			(effects
 				(font
@@ -6539,6 +6539,9 @@
 		)
 		(pin "1"
 			(uuid "3e097b9b-f3f8-4d26-a04b-f27b842c2f9d")
+		)
+		(pin "3"
+			(uuid "d1eecb4f-e4ee-4f05-bf81-d9bec49d9528")
 		)
 		(instances
 			(project "Tesseract"
@@ -6975,6 +6978,73 @@
 			(project "Tesseract"
 				(path "/44e4f56e-7384-4197-adaa-f1c4e23e6283"
 					(reference "#PWR017")
+					(unit 1)
+				)
+			)
+		)
+	)
+	(symbol
+		(lib_id "power:+3V3")
+		(at 133.35 110.49 90)
+		(unit 1)
+		(exclude_from_sim no)
+		(in_bom yes)
+		(on_board yes)
+		(dnp no)
+		(fields_autoplaced yes)
+		(uuid "95a0a542-a64c-418e-a15d-87fde31cfc1d")
+		(property "Reference" "#PWR018"
+			(at 137.16 110.49 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Value" "+3V3"
+			(at 129.54 110.4899 90)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify left)
+			)
+		)
+		(property "Footprint" ""
+			(at 133.35 110.49 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Datasheet" ""
+			(at 133.35 110.49 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Description" "Power symbol creates a global label with name \"+3V3\""
+			(at 133.35 110.49 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(pin "1"
+			(uuid "40874027-8663-4ff9-a61e-fd1519af10d2")
+		)
+		(instances
+			(project "Tesseract"
+				(path "/44e4f56e-7384-4197-adaa-f1c4e23e6283"
+					(reference "#PWR018")
 					(unit 1)
 				)
 			)
