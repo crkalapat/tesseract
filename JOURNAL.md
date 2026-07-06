@@ -76,7 +76,7 @@ know which wire goes to which wire during assembly, so I started on that before 
 
 **Total time spent: 3h**
 
-### June 29th: Redesign, redesign
+## June 29th: Redesign, redesign
 
 I worked into the wee hours of midnight this morning and yesterday afternoon to fix a bunch of small things and add a few small
 things to the project. There's a lot of changes (since it was around 5h worth of work), so here's a quick list of everything that
