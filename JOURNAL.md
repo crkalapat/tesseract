@@ -5,9 +5,40 @@ description: "A cuboid smart assistant"
 created_at: "2026-06-17"
 ---
 
-**Total time spent on project: 18.41h**
+**Total time spent on project: 23.16h**
 
 _Note: All journal entries from June 24 - 28 were retroactively added from Hack Club's Stardance Platform_
+
+## July 5th: All Hardware Design Done
+
+It was very much a tedious process, but I finished both the PCB and the CAD of Tesseract. In order to get to that though, a lot
+of work had to be done, and going over all of them individually would probably lead to me writing an essay for this journal
+entry. At a high level though, today I:
+
+- Built a chamber for WS2812b LED strip to mount onto
+- Added in a translucent acrylic diffuser (and mounting for it) in the LED slot on the top
+- Moved the LED mounting holes on the PCB to the correct spot
+- Added standoffs for the display cover so the PCB mounts vertically off of it
+- Added a small cutout for USB C connector pins (so the board can be flush on the bottom)
+- Added small cutouts for the USB C connector screws at the bottom so that they would be flush and not protrude out
+- Found microphone IC STEP file and added that to the PCB
+- Made 4 button caps that go on top of the 6mm tactile switches on PCB
+- Made a sample image (for decal on screen) of the time and date that I will _hopefully_ be able to code fairly easily
+- Rendered the whole project using Autodesk Fusion
+
+The buttons in particular were _very_ painstakingly tedious to get aligned properly, as I had to see that they were misaligned in
+the CAD, "fix it" in the PCB, and then bring it back into the CAD only to realize that my "fix" (of moving them up or down) didn't work,
+and I would have to move the buttons again in the PCB, bring the entire PCB back into OnShape, redo some assembly mating, and so on.
+I thought it would be faster, but it took me 4 attempts to get the button placement just right for the CAD. After the button placement
+was resolved, and everything was somehow done, I spent over an hour fiddling around with materials, lighting, and apperances in Autodesk
+Fusion until I got the brightness and light diffusion working to my liking. Eventually though, I chose three of the best renders, and
+I put them in the assets folder of this project for you to see. Right now at least though (for better or worse), you can't see the side
+grill design on Tesseract, so I might change that later, or might not. We'll see how I like it over time, and whether I'm going to redo
+all the renders.
+
+![Render of Tesseract](assets/completed-design.png)
+
+**Total time spent: 4.75h**
 
 ## July 3rd: PCB Routing
 

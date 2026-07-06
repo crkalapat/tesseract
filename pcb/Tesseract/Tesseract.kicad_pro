@@ -554,7 +554,7 @@
       "plot": "",
       "pos_files": "",
       "specctra_dsn": "",
-      "step": "",
+      "step": "../../../../../../Downloads/Tesseract-PCB.step",
       "svg": "",
       "vrml": ""
     },
