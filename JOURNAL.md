@@ -5,9 +5,22 @@ description: "A cuboid smart assistant"
 created_at: "2026-06-17"
 ---
 
-**Total time spent on project: 23.16h**
+**Total time spent on project: 24.66h**
 
 _Note: All journal entries from June 24 - 28 were retroactively added from Hack Club's Stardance Platform_
+
+## July 6th: (Hopefully) All Hardware Design Done
+
+So, I might have lied yesterday when I said that all of the hardware design was done, since I just realized today that the
+Raspberry Pi Zero 2W only has one I2S port while creating a wiring diagram for it in Figma, and I have 2 mics and 1 speaker that all
+communicate over I2S, and all need to connect to the Pi somehow. What this basically meant was that I ended up spending a bunch
+of time on research, which eventually led to me removing the top microphone from the PCB and schematic, and now techincally the
+CAD is different as a result. This also meant that I ended up wiring BCLK to SCK, and WS to LRCLK, which left me with two fewer signals to go the Raspberry Pi as a result. Now, I just have to finish the wiring diagram, write a rough version of the code, and
+_fingers crossed_ I should be done with the design phase of this project.
+
+![Wiring Diagram for Pi 1](assets/wiring-1.png)
+
+**Total time spent: 1.5h**
 
 ## July 5th: All Hardware Design Done
 
