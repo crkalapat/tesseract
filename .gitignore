@@ -4,3 +4,6 @@ pcb/Tesseract/fp-info-cache
 pcb/Tesseract/fp-lib-table
 pcb/Tesseract/sym-lib-table
 pcb/Tesseract/~Tesseract.kicad_pcb.lck
+pcb/Tesseract/~Tesseract.kicad_sch.lck
+code/venv/
+code/.env
