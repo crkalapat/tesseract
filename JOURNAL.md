@@ -1,13 +1,47 @@
 ---
 title: "Tesseract"
 author: "crkalapat"
-description: "A cuboid smart assistant"
+description: "An open source smart speaker"
 created_at: "2026-06-17"
 ---
 
-**Total time spent on project: 24.66h**
+**Total time spent on project: 28.66h**
 
 _Note: All journal entries from June 24 - 28 were retroactively added from Hack Club's Stardance Platform_
+
+## July 7th: Code and BOM
+
+It was another locked-in day, and once again, I did a lot both big and small things. And yes, I changed the hardware design,
+again. Turns out that Tesseract was not at all optimized for cost and pricing, so I had to do some BOM optimization. Originally,
+I thought I could get things like threaded inserts and an LED strip from Amazon, but I realized I was overpaying quite a bit
+when I found the same things for cheaper on AliExpress. Apart from that small anecdote, today I:
+
+- Wrote a very barebones version of the code for Tesseract that just uses mic and speaker to transcribe audio and get an LLM
+  response
+- Finished the wiring diagram
+- Moved around all the global labels in KiCad so that wires would not go over each other in the physical wiring process,
+  and so that assembly would be easier
+- Rewired some of the PCB to accomplish the label moving
+- Changed some JST connectors to be AM-compatible (some now have a mounting hole present basically)
+- Started on the BOM, and realized that this project is very expensive, and did some cost optimization with AliExpress
+
+Now, the BOM, while it is a single bullet point, took a lot longer than expected. This is mainly because I underestimated the
+cost of shipping, and using multiple vendors for parts. For example, the rubber feet for Tesseract only cost $4.50 for a large
+bag, but shipping from McMaster Carr was around $11 (and there was no other shipping option easily available to find). I'm
+planning on uploading the BOM once it's all done (since it's currently on Google Sheets), but I will say right now that it is
+getting very close to $180.
+
+I'm so grateful for AliExpress. Hopefully I don't get scammed by some seller on there.
+
+![1st version of BOM](assets/bom-draft-1.png)
+
+**Total time spent: 4h**
+
+_Side Note: I have no clue now, based off the scouring online that I did, when I will actually finish the physical build of_
+_Tesseract. This is because the Raspberry Pi Zero 2W, at the time of writing this, is literally out of stock of every store_
+_online (except AliExpress or eBay). Normally, the board costs $15, but on the resell websites, its going for over $80, and_
+_I'm not going to pay more than 5x the actual price to get it earlier. For now, I'm just putting it on the BOM for what it_
+_would cost if it were in stock at AdaFruit. Hopefully supply chain gets it out soon..._
 
 ## July 6th: (Hopefully) All Hardware Design Done
 
@@ -15,7 +49,8 @@ So, I might have lied yesterday when I said that all of the hardware design was 
 Raspberry Pi Zero 2W only has one I2S port while creating a wiring diagram for it in Figma, and I have 2 mics and 1 speaker that all
 communicate over I2S, and all need to connect to the Pi somehow. What this basically meant was that I ended up spending a bunch
 of time on research, which eventually led to me removing the top microphone from the PCB and schematic, and now techincally the
-CAD is different as a result. This also meant that I ended up wiring BCLK to SCK, and WS to LRCLK, which left me with two fewer signals to go the Raspberry Pi as a result. Now, I just have to finish the wiring diagram, write a rough version of the code, and
+CAD is different as a result. This also meant that I ended up wiring BCLK to SCK, and WS to LRCLK, which left me with two fewer signals
+to go the Raspberry Pi as a result. Now, I just have to finish the wiring diagram, write a rough version of the code, and
 _fingers crossed_ I should be done with the design phase of this project.
 
 ![Wiring Diagram for Pi 1](assets/wiring-1.png)
