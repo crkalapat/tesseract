@@ -5,9 +5,37 @@ description: "An open source smart speaker"
 created_at: "2026-06-17"
 ---
 
-**Total time spent on project: 28.66h**
+**Total time spent on project: 33.66h**
 
 _Note: All journal entries from June 24 - 28 were retroactively added from Hack Club's Stardance Platform_
+
+## July 9th: (Actually) Finished the 1st Design Version
+
+Exactly what the title says. I need to say no more. Once again, it was a long day, and there was a lot I did, so really quickly,
+today I:
+
+- Had the realization that the 90 degree offset lighting I planned was going to be unevenly bright from the bottom (vertically)
+  of the LED diffuser to the top
+- Decided to pivot to having the LEDs directly below the plastic frosted diffuser, and added in WS2812b LEDs into the schematic
+- Wired the LEDs in the PCB, only to realize that I could only buy them from LCSC basically, which would make the LEDs on the PCB
+  more expensive than just buying an LED strip from AliExpress
+- Reverted back to an old version of the schematic and PCB, and fixed it to include some other small optimizations I made to the
+  PCB along with adding the LEDs (like using two 7 pin JST XH sockets instead of a 6 and 8)
+- Ran the board through DRC, and fixed all the errors from a faulty mic footprint that I had been neglecting to fix
+- Redesigned the LED light containment chamber
+- Realigned the screw holes on the PCB to give more space for the LED Chamber
+- Added a slight divot to the surface of the button caps, so they are easier to push (and more visible)
+- Exported all the necessary files, updated BOM (again)
+- Rendered everything nicely in Fusion
+- Added a lot of files to the Git repo
+
+Truly, the devil was in the details for a lot of this. I am really happy though with how everything has turned out, and I'm very
+confident that I will inevitably have to tweak some part of the design at some point. Right now though, I think the current design
+is ready to be manufactured, and I'm ready to build!
+
+![Exploded View Render](assets/render-6.png)
+
+**Total time spent: 5h**
 
 ## July 7th: Code and BOM
 
