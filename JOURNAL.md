@@ -112,7 +112,7 @@ I put them in the assets folder of this project for you to see. Right now at lea
 grill design on Tesseract, so I might change that later, or might not. We'll see how I like it over time, and whether I'm going to redo
 all the renders.
 
-![Render of Tesseract](assets/completed-design.png)
+![Render of Tesseract](assets/not-completed-design.png)
 
 **Total time spent: 4.75h**
 
