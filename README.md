@@ -60,8 +60,8 @@ _More detailed BOM with links can be found under BOM.csv in main directory_
 | 4Ohm 3W Speaker                    |        1 |      $11.57 |
 | PCB                                |        1 |       $3.20 |
 | PCB Stencil                        |        1 |       $7.16 |
-| MAX98357AETE+T                     |        1 |       $3.73 |
-| DMM-4026-B-I2S-R                   |        1 |       $2.94 |
+| MAX98357AETE+T Speaker IC          |        1 |       $3.73 |
+| DMM-4026-B-I2S-R Microphone        |        1 |       $2.94 |
 | USB-C Breakout Board               |        1 |       $1.62 |
 | (Owned) M2.5×8 Screws              |        4 |       $0.00 |
 | (Owned) M3×8 Screws                |       12 |       $0.00 |
@@ -76,7 +76,7 @@ _More detailed BOM with links can be found under BOM.csv in main directory_
 | (3D Printed) LED Chamber           |        1 |       $0.00 |
 | (3D Printed) Button Caps           |        4 |       $0.00 |
 | M3 Heat-Set Threaded Insert Bag    |        1 |       $3.56 |
-| RGB LED Strip                      |        1 |       $6.22 |
+| WS2812b LED Strip                  |        1 |       $6.22 |
 | Rubber Feet Pack                   |        1 |       $1.93 |
 | AliExpress Discounts               |          |      -$8.38 |
 
