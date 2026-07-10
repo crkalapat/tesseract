@@ -75,7 +75,7 @@ _More detailed BOM with links can be found under BOM.csv in main directory_
 | (3D Printed) Speaker Assembly Lid  |        1 |       $0.00 |
 | (3D Printed) LED Chamber           |        1 |       $0.00 |
 | (3D Printed) Button Caps           |        4 |       $0.00 |
-| M3 Heat-Set Threaded Inserts       |        1 |       $3.56 |
+| M3 Heat-Set Threaded Insert Bag    |        1 |       $3.56 |
 | RGB LED Strip                      |        1 |       $6.22 |
 | Rubber Feet Pack                   |        1 |       $1.93 |
 | AliExpress Discounts               |          |      -$8.38 |
