@@ -2,18 +2,25 @@
 
 # Tesseract
 
-_An open-source smart speaker_
+_An open-source smart speaker that works with any AI you want_
 
-Tesseract is a smart speaker that lets you communicate with your favorite AI, without having to pick
-up your phone or get on your computer. It's powered primarily by a Raspberry Pi Zero 2W, which connects
-to a custom PCB that links the Pi up to a microphone, speaker, display, buttons, and an LED strip. All
-you need to do to provide is an OpenRouter API key to access their wide selection of both large language
-models and voice models.
+Tesseract is a smart speaker that lets you talk to your favorite AI without picking up your phone or getting on your computer. You pick the model (Claude, GPT, open source models, or whatever else you like), and you can switch any time a better one comes out. I'm also planning smart home integration, so you'll be able to control your devices from Tesseract itself or from the Claude or ChatGPT app.
 
-In addition to its AI capabilities, Tesseract also doubles as an alarm clock with its display. I specifically
-chose an OLED display for Tesseract for this reason, so that at night there would not be a backlight that can be
-potentially distracting. The alarm clock idea though served as inspiration for the project name, _Tesseract_,
-since the project is a cube that also has time inside it (like a 4D cube).
+I started this project because assistants like Alexa are way behind frontier models, and with how often the frontier labs leapfrog each other, being stuck with one assistant doesn't make much sense anymore.
+
+## Status
+
+- [x] Enclosure CAD and PCB design
+- [x] v1 boards fabricated
+- [ ] Assembly
+- [ ] Firmware
+- [ ] Smart home integration (planned)
+
+## Hardware
+
+Tesseract runs on a Raspberry Pi Zero 2W connected to a custom PCB that links it to a microphone, speaker, display, buttons, and an LED strip. All you need to provide is an OpenRouter API key, which gives you access to a wide range of language and voice models.
+
+It also works as an alarm clock. I went with an OLED display so there's no backlight lighting up the room at night. The alarm clock is also where the name came from, since it's a cube with time inside it, kind of like a 4D cube.
 
 ## Features
 
