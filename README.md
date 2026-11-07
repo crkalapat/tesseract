@@ -1,36 +1,74 @@
-<img src="assets/render-4.png" width="29.6%"/> <img src="assets/render-5.png" width="35%"/> <img src="assets/render-6.png" width="31.7%"/>
-
 # Tesseract
 
-_An open-source smart speaker that works with any AI you want_
+_An open-source smart speaker for your AI agent_
 
-Tesseract is a smart speaker that lets you talk to your favorite AI without picking up your phone or getting on your computer. You pick the model (Claude, GPT, open source models, or whatever else you like), and you can switch any time a better one comes out. I'm also planning smart home integration, so you'll be able to control your devices from Tesseract itself or from the Claude or ChatGPT app.
-
-I started this project because assistants like Alexa are way behind frontier models, and with how often the frontier labs leapfrog each other, being stuck with one assistant doesn't make much sense anymore.
+<p align="center">
+  <a href="https://www.youtube.com/watch?v=WYpaCrV-wes">
+    <img src="https://img.youtube.com/vi/WYpaCrV-wes/maxresdefault.jpg" width="90%" alt="Watch the 2-minute demo">
+  </a>
+  <br>
+  <br>
+  <a href="https://www.youtube.com/watch?v=WYpaCrV-wes">▶ Watch the demo (2:15)</a>
+</p>
+<br>
+<p align="center">
+  <img src="assets/photo-lightbar.jpg" width="30%">
+  <img src="assets/photo-top.jpg" width="30%">
+  <img src="assets/photo-detail.jpg" width="30%">
+</p>
 
 ## Status
 
 - [x] Enclosure CAD and PCB design
 - [x] v1 boards fabricated
-- [ ] Assembly
-- [ ] Firmware
-- [ ] Smart home integration (planned)
+- [x] Assembly
+- [x] Firmware
+- [x] Hermes agent integration
+- [ ] Dynamic feature generation
+- [ ] Smart home integration
+
+## Next Steps
+
+- Personalized software: Tesseract is able to add new features to its code just by you describing them with your voice. For example, a stock ticker widget on the clock screen.
+
+- Smart home integration: Tesseract acts as an endpoint that can connect control to your AI app of choice to let you control your home's devices
 
 ## Hardware
 
-Tesseract runs on a Raspberry Pi Zero 2W connected to a custom PCB that links it to a microphone, speaker, display, buttons, and an LED strip. All you need to provide is an OpenRouter API key, which gives you access to a wide range of language and voice models.
-
-It also works as an alarm clock. I went with an OLED display so there's no backlight lighting up the room at night. The alarm clock is also where the name came from, since it's a cube with time inside it, kind of like a 4D cube.
-
-## Features
+### Features
 
 - Crisp 1.91" Square OLED Display
-- Colorful RGB WS2812b LED Strip
+- 9 RGB WS2812b LEDs (on a strip)
 - Compact 4 Ohm Speaker
 - 4 Programmable Buttons
 - Built-in Microphone
-- 2.4Ghz WiFi Connectivity
+- 2.4 GHz Wi-Fi
 - Powered via USB-C
+
+Tesseract runs on a Raspberry Pi Zero 2W connected to a custom PCB that links it to a microphone, speaker, display, buttons, and an LED strip. The hardware mainly does cloud API calls, but still runs a wake-word detection model locally.
+
+Tesseract also works as an alarm clock. The main reason I went with an OLED display was so there could be a true black (not like that on an LCD) at night.
+
+The alarm clock is also where the name "Tesseract" came from, since the project is literally a cube with time (a clock face) inside it, kind of like a 4D cube.
+
+## Firmware
+
+### Features
+
+- Hermes Agent compatibility
+- Spotify compatibility
+- Quiet mode, so finished agent tasks wait for you instead of interrupting
+- Night mode to dim screen
+- Timers, alarms, weather, and more
+
+Say "Franklin" and ask anything. The firmware in [`code/`](code/README.md) handles on-device wake word
+detection, streams speech-to-text, the LLM and text-to-speech through OpenRouter, drives the clock
+display (with captions while it talks) and LED strip, and runs timers and alarms.
+
+Simple commands (timers, volume, music controls) are handled on the device. Questions go to a fast model
+(currently `gpt-oss-120b`), and anything involving your own stuff (calendar, email, documents) or several
+steps goes to your own AI agent (Hermes Agent is currently supported). More details about the code,
+setup, pinout and bring-up steps are in [code/README.md](code/README.md).
 
 ## Schematic
 
