@@ -9,3 +9,14 @@ code/venv/
 code/.env
 pcb/Tesseract/#auto_saved_files#
 pcb/Tesseract/_autosave-Tesseract.kicad_sch
+code/.venv/
+code/data/
+code/models/melspectrogram.onnx
+code/models/embedding_model.onnx
+code/models/hey_*.onnx
+code/models/alexa_*.onnx
+code/models/sherpa-onnx-kws-*/
+__pycache__/
+.pytest_cache/
+code/models/silero_vad.onnx
+.claude
