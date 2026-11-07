@@ -1,0 +1,5 @@
+# Laptop development: python -m tesseract run --sim, and the test suite.
+-r requirements.txt
+sounddevice        # laptop mic + speakers for --sim
+pytest
+openwakeword       # only for tests/test_wakeword_parity.py

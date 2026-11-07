@@ -1,0 +1,18 @@
+[Unit]
+Description=Tesseract boot light (LEDs and screen while the speaker starts)
+# As early as possible: right after the root filesystem, before most of boot. The speaker
+# (tesseract.service) stops it when it's ready to drive the LEDs and the screen itself.
+DefaultDependencies=no
+After=systemd-remount-fs.service
+Before=tesseract.service shutdown.target
+Conflicts=shutdown.target
+
+[Service]
+Type=simple
+User=root
+WorkingDirectory=@CODE_DIR@
+ExecStart=@VENV@/bin/python -m tesseract.splash
+TimeoutStopSec=3
+
+[Install]
+WantedBy=sysinit.target

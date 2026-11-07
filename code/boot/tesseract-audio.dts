@@ -1,0 +1,66 @@
+// Tesseract sound card: DMM-4026 I2S mic + MAX98357A amp sharing one I2S bus.
+//
+// This is the Raspberry Pi kernel's googlevoicehat-soundcard overlay (built for
+// exactly this mic+amp topology) with ONE change: the stock overlay hard-drives
+// GPIO16 as the amp's SD_MODE output, so a button on GPIO16 would short a
+// driven-high pin to ground. Here that pin is a parameter, defaulting to unused
+// GPIO25 (Tesseract's SD_MODE is hard-wired through R2 anyway).
+//
+// Build + enable (install.sh does this):
+//   dtc -@ -I dts -O dtb -o /boot/firmware/overlays/tesseract-audio.dtbo tesseract-audio.dts
+//   config.txt:  dtoverlay=tesseract-audio,amp_gpio=25
+//
+// Pins (fixed by the PCM peripheral): BCLK GPIO18, LRCLK GPIO19, DIN GPIO20, DOUT GPIO21.
+// Format: 48 kHz, 2 x S32_LE, Pi is clock master.
+/dts-v1/;
+/plugin/;
+
+/ {
+	compatible = "brcm,bcm2835";
+
+	fragment@0 {
+		target = <&i2s_clk_producer>;
+		__overlay__ {
+			status = "okay";
+		};
+	};
+
+	fragment@1 {
+		target = <&gpio>;
+		__overlay__ {
+			tesseract_amp_pins: tesseract_amp_pins {
+				brcm,pins = <25>;
+				brcm,function = <1>; /* out */
+				brcm,pull = <0>;
+			};
+		};
+	};
+
+	fragment@2 {
+		target-path = "/";
+		__overlay__ {
+			tesseract_codec: voicehat-codec {
+				#sound-dai-cells = <0>;
+				compatible = "google,voicehat";
+				pinctrl-names = "default";
+				pinctrl-0 = <&tesseract_amp_pins>;
+				sdmode-gpios = <&gpio 25 0>;
+				status = "okay";
+			};
+		};
+	};
+
+	fragment@3 {
+		target = <&sound>;
+		__overlay__ {
+			compatible = "googlevoicehat,googlevoicehat-soundcard";
+			i2s-controller = <&i2s_clk_producer>;
+			status = "okay";
+		};
+	};
+
+	__overrides__ {
+		amp_gpio = <&tesseract_amp_pins>,"brcm,pins:0",
+		           <&tesseract_codec>,"sdmode-gpios:4";
+	};
+};

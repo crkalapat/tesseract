@@ -1,0 +1,20 @@
+[Unit]
+Description=Tesseract smart speaker
+# Don't wait for Wi-Fi: the clock should come up right away, and it handles being offline itself
+# (and opens Wi-Fi setup when it can't find a network it knows).
+After=NetworkManager.service sound.target
+
+[Service]
+# root is required by rpi_ws281x (it drives the LED strip by DMA through /dev/mem)
+User=root
+WorkingDirectory=@CODE_DIR@
+ExecStart=@VENV@/bin/python -m tesseract run
+Environment=PYTHONUNBUFFERED=1
+# audio and wake word get the CPU first
+Nice=-10
+Restart=always
+RestartSec=2
+TimeoutStopSec=10
+
+[Install]
+WantedBy=multi-user.target

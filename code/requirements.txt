@@ -1,0 +1,16 @@
+# Installed by install.sh into code/.venv (created with --system-site-packages).
+# gpiozero, lgpio and spidev come from apt: python3-gpiozero python3-lgpio python3-spidev
+numpy>=1.24
+httpx[http2]>=0.27
+pillow>=10.1
+onnxruntime>=1.17
+sherpa-onnx>=1.12       # [wake] engine = "sherpa"
+sentencepiece>=0.2      # turns the wake word into the keyword model's word pieces
+segno>=1.6              # the Wi-Fi setup QR code on the display
+webrtcvad-wheels>=2.0.14
+websockets>=13          # Spotify Soloist's control API
+pyalsaaudio>=0.10; sys_platform == "linux"
+rpi_ws281x>=5.0; sys_platform == "linux"
+
+# Optional:
+# pvporcupine        # [wake] engine = "porcupine"

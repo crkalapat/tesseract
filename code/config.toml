@@ -1,0 +1,316 @@
+# ─────────────────────────────────────────────────────────────────────────────
+#  Tesseract configuration
+#  Secrets (API keys) go in .env, not here. See .env.example.
+#  Restart after editing:  sudo systemctl restart tesseract
+# ─────────────────────────────────────────────────────────────────────────────
+
+# ═════════════════════════════════════════════════════════════════════════════
+#  GPIO PINS: every pin Tesseract touches, in one place.
+#  Numbers are BCM GPIO numbers (what the wiring diagram calls "GPIO 17"), NOT
+#  physical header pin numbers. Run `python -m tesseract doctor` after changing
+#  these; it warns you about pins that can't do the job you gave them.
+# ═════════════════════════════════════════════════════════════════════════════
+[pins]
+# Buttons (other leg to GND; internal pull-ups are enabled). Matches current_wiring.png.
+button_action   = 26   # SW4  header pin 37. tap: talk / stop / dismiss alarm. hold: cancel everything + forget conversation
+button_vol_up   = 22   # SW3  header pin 15
+button_vol_down = 5    # SW1  header pin 29
+button_mute     = 6    # SW2  header pin 31
+
+# WS2812B LED strip data line. MUST be a PWM pin: 12, 13, 18 or 19.
+# 18/19 are taken by I2S, so it's 12 (PWM0, header pin 32) or 13 (PWM1, pin 33).
+led_data = 12
+
+# SSD1333 OLED (4-wire SPI on SPI0). SCLK=GPIO11 and MOSI=GPIO10 are fixed by SPI0;
+# D/C, RESET and the chip select can be any free GPIO.
+display_dc    = 27
+display_reset = 17
+# The wiring diagram puts CS# on header pin 24 (GPIO8), but this board's CS# wire is
+# soldered to pin 22 (GPIO25), so the SPI chip select is moved there instead (install.sh
+# applies it; re-run it after changing this). Move the wire to pin 24 -> set 8.
+display_cs = 25
+display_spi_bus = 0
+display_spi_device = 0
+
+# I2S audio is fixed by the PCM peripheral and configured in the device-tree
+# overlay, not here: BCLK=GPIO18 (shared mic+amp), LRCLK=GPIO19 (shared),
+# mic data -> GPIO20, amp data <- GPIO21.
+# The VoiceHAT audio driver insists on owning an "amp enable" GPIO and drives it high
+# while the speaker is playing. Your amp's SD_MODE is hard-wired through R2, so this pin
+# goes nowhere: it must be one with NOTHING connected (it was GPIO25, which blanked the
+# display, whose CS# wire is on that pin). GPIO4 = header pin 7, nothing wired near it.
+amp_enable_dummy = 4
+# If you rewire the amp's SD_MODE to a GPIO (R2's 5 V end to header pin 16 = GPIO23), set
+# that GPIO here and re-run install.sh: the amp then stays off until the sound is running
+# and switches off before it stops, so no pops at power-on, start-up or shutdown.
+amp_enable = 0
+
+# ═════════════════════════════════════════════════════════════════════════════
+[assistant]
+name = "Franklin"
+# Where you are, so "what's the weather"-style answers and web searches are local.
+# Taking it somewhere? Just say "Franklin, I'm in Chicago" (or run: tesseract location
+# "Chicago, Illinois"); that saves it on the device in data/local.toml (which overrides this
+# line and survives copying new code over) and sets the clock's time zone. Wi-Fi isn't in
+# this file (passwords would end up in git): see [network] below.
+location = ""                 # e.g. "Austin, Texas"  (needed for the weather)
+units = "imperial"            # "imperial" (°F, mph) or "metric" (°C, km/h)
+# Extra instructions appended to the system prompt (personality, facts about you, …).
+extra_instructions = ""
+# Keep conversation context for follow-ups for this long after the last exchange.
+memory_minutes = 5
+max_history_turns = 8
+# After a reply that ends in a question, listen again without needing the wake word.
+follow_up = true
+follow_up_seconds = 6
+
+[wake]
+# "both"         (default) the trained "Franklin" model below + sherpa; either one wakes it
+# "sherpa"       fully local, listens for any word you type, no training
+# "openwakeword" fully local, needs a model trained for your word (see README)
+# "porcupine"    Picovoice; needs an access key in .env
+engine = "both"
+# sherpa: what to listen for. "" means the [assistant] name above.
+keyword = ""
+# Higher threshold = fewer false wakes but more misses; higher boost = easier to wake.
+keyword_threshold = 0.3
+keyword_boost = 0.5
+# Other ways "Franklin" comes out when you say it fast ("Franken"). Each extra spelling
+# catches more mumbled wakes and a few more false ones (mostly "Frankenstein",
+# "frankincense"). "word#0.45" gives that spelling a stricter threshold. Only used when
+# the keyword is Franklin; set your own if you rename it.
+keyword_variants = ["Franken", "Franklyn", "Frankin#0.45"]
+# The trained model (openWakeWord style; see README for how it was made and measured).
+# It fires when its score stays >= threshold for `frames` 80 ms steps in a row.
+# Misses you: threshold 0.5. Wakes by itself: threshold 0.7 or frames 3.
+model = "models/franklin.onnx"
+fallback_model = "hey_jarvis"
+threshold = 0.6
+frames = 2
+# Porcupine: path to the .ppn file you download from console.picovoice.ai
+porcupine_keyword = "models/franklin_raspberry-pi.ppn"
+porcupine_sensitivity = 0.6
+# While Tesseract is talking, echo cancelling takes most of its own voice out of the mic;
+# this asks the trained model for a little more confidence on top, so the rest can't wake
+# it (sherpa needs none). It also ignores its own name in its own replies. Too hard to
+# interrupt: 0. Interrupts itself: 0.25.
+speaking_threshold_boost = 0.1
+
+[audio]
+# "auto" finds the VoiceHAT-driver sound card. Otherwise an ALSA name like
+# "hw:CARD=sndrpigooglevoi,DEV=0".
+device = "auto"
+mic_channel = 0          # MIC1 LR pin is tied to GND -> left slot -> channel 0
+mic_gain_db = 8         # MEMS mic is -26 dBFS; speech is quiet without makeup gain
+volume = 6               # 0-10, startup volume (last-used volume is remembered)
+max_volume_db = 0        # attenuation at volume 10; lower this if the speaker distorts
+
+# Take Franklin's own voice back out of the mic (echo cancellation), so you can
+# interrupt it by saying "Franklin". Needs the I2S card (mic and speaker share a clock).
+# echo_suppress: how hard to turn down what's left of its voice (0 = filter only).
+echo_cancel = true
+echo_suppress = 2.0
+
+[listen]
+# End-of-speech detection. After `early_silence_ms` of quiet, the audio so far is
+# sent to speech-to-text while Tesseract keeps listening. If that transcript is a
+# finished sentence ("What's the weather?"), it answers once you've been quiet for
+# `complete_silence_ms`. If it trails off ("Set a timer for..."), it waits up to
+# `end_silence_ms` for you to go on. Lower = snappier, higher = fewer cut-offs.
+early_silence_ms = 200
+complete_silence_ms = 750
+end_silence_ms = 1200
+# Give up if you don't start talking within this long of the wake word.
+start_timeout_s = 5
+max_utterance_s = 60
+# Once you've been talking for `long_talk_after_s`, you're explaining something, so a thinking pause
+# mid-thought shouldn't end it: only a pause of `long_pause_ms` does (quick commands stay snappy).
+long_talk_after_s = 6
+long_pause_ms = 1600
+# Audio kept from just before the wake word fired, so "Franklin what time is it"
+# said in one breath doesn't lose the first word.
+preroll_ms = 300
+# Speech detection is Silero VAD (models/silero_vad.onnx, fetched by install.sh): 0-1, higher
+# = more sure it's a voice. webrtcvad is the fallback if that model is missing.
+vad_threshold = 0.5
+vad_aggressiveness = 2   # 0-3 (webrtcvad fallback); higher rejects more noise
+
+[stt]
+# Any OpenRouter transcription model. whisper-large-v3-turbo is fast and cheap.
+# More accurate alternative: "openai/gpt-4o-mini-transcribe"
+model = "openai/whisper-large-v3-turbo"
+language = "en"
+provider_order = ["groq"]      # Groq's whisper is the fastest host; others are fallbacks
+
+# ─── Two models ──────────────────────────────────────────────────────────────
+# [llm] is the fast model you talk to. It answers quick questions itself, checks
+# the weather, searches the web, sets timers, and hands anything bigger
+# (calendar, to-do list, multi-step jobs) to the [thinking] model, saying
+# "On it!" while that runs in the background.
+[llm]
+# gpt-oss-120b on Cerebras/Groq hardware is the lowest-latency strong tool-caller on
+# OpenRouter. Alternatives: "inception/mercury-3", "nvidia/nemotron-3.5-lightning".
+model = "openai/gpt-oss-120b"
+# OpenRouter tries these providers in order and falls back to any other host.
+# [] = let OpenRouter choose by `provider_sort` instead.
+provider_order = ["cerebras", "groq", "sambanova"]
+provider_sort = "latency"
+# Thinking costs latency. "off", "minimal", "low", "medium", "high"
+# (gpt-oss can't turn it all the way off; "low" is a few dozen tokens, ~20 ms on Cerebras).
+reasoning = "low"
+max_tokens = 300
+# Model used by the web_search tool (OpenRouter's web plugin is attached to it).
+search_model = "openai/gpt-oss-120b"
+
+[thinking]
+# Background jobs: reliable tool use matters more than speed here. Claude Haiku 5.5
+# is served only by first-party clouds at $0.10/$0.50 per million tokens. Cheaper:
+# "z-ai/glm-5.3-flash" ($0.05/$0.12, but spread over 35 hosts of mixed quality).
+model = "anthropic/claude-haiku-5.5"
+reasoning = "low"
+max_tokens = 2000
+provider_order = []            # [] = OpenRouter's default: the cheapest healthy provider
+max_steps = 12                 # tool calls before it gives up
+input_timeout_s = 600          # how long it waits for your answer when it asks you something
+keep_builtin = false           # true: with [[agents]] configured, keep this built-in agent (on-device
+                               # to-do list, calendar, notes) as one more choice. Its calendar is on the
+                               # device, separate from your agent's (e.g. Google), so off by default
+
+[tts]
+# Low-latency Microsoft voice. The voice is a fixed ID (there's no "Franklin" voice);
+# Picked by ear with `tesseract voices` (try others the same way).
+model = "microsoft/mai-voice-2.1-flash"
+voice = "en-US-Grant:MAI-Voice-2.1-Flash"
+# Raw PCM sample rate the TTS model returns (OpenRouter returns 16-bit mono).
+# 24000 is right for the MAI, OpenAI, Gemini and Kokoro voices.
+sample_rate = 24000
+speed = 1.0
+
+[leds]
+enabled = true           # false = never touch the LED driver (troubleshooting)
+count = 9                # number of LEDs on your strip; set this!
+brightness = 0.35        # 0-1: fraction of full LED power at the brightest moment
+night_brightness = 0.04
+# Glow faintly when idle (off = dark like an Echo; the alarm-clock-friendly default).
+idle_glow = false
+reverse = false          # flip if animations "start" from the wrong end
+dma = 13                 # DMA channel for the LED driver. 10 collides with the sound card on current kernels (dropouts, mic stalls); never use 5 (SD card corruption). Check with `tesseract perf`.
+strip_type = "GRB"       # WS2812B are GRB; change if red/green are swapped
+
+[display]
+spi_hz = 10_000_000      # SSD1333 datasheet: 100 ns min clock period = 10 MHz. 16-20 MHz often works; raise it if you like
+rotation = 180             # 0/90/180/270, if the panel is mounted rotated (upside down: 180)
+mirror = "horizontal"          # "horizontal" / "vertical" / "both", if text reads backwards like in a mirror
+color_order = "RGB"      # flip to "BGR" if red and blue are swapped
+clock_24h = false
+# 0-10, like the volume. This is where it starts; after that "Franklin, dim the screen",
+# "make the display brighter", "set the screen brightness to 4" or `tesseract brightness 4`
+# change it (and it's remembered). 0 = screen off.
+brightness = 10
+night_brightness = 1     # 0-10, what the screen drops to in night mode
+# Moves the clock a few pixels every minute so the OLED doesn't burn in.
+burn_in_shift = true
+
+[night]
+# Say "good night" ("Franklin, good night"): the screen dims to night_brightness and turns
+# warm, and the LEDs go dark. From sunrise_start it slowly brightens again, and it's back to
+# normal at sunrise_end. "Good morning" ends night mode early.
+start = "02:00"          # if you forget to say good night, night mode starts by itself ("" = never)
+sunrise_start = "06:30"
+sunrise_end = "07:30"
+
+[sounds]
+wake_chime = true        # short chime when the wake word is heard
+volume = 0.5             # earcon loudness relative to speech
+
+[network]
+# Wi-Fi lives in NetworkManager, not here. Three ways to add a network:
+#   * before you leave:  tesseract wifi add "Home Wi-Fi"   (asks for the password; joins
+#                        by itself when it's in range, even if that's not now)
+#   * when you get there: if it can't find a Wi-Fi it knows, it opens its own hotspot
+#                        and shows a QR code. Scan it with your phone, the setup page
+#                        pops up, pick your network. (Or hold both volume buttons 3 s,
+#                        or say "Franklin, set up Wi-Fi", to open it any time.)
+#   * over SSH:          tesseract setup
+setup_hotspot = true          # open the setup hotspot by itself when no known Wi-Fi is around
+setup_after_s = 45            # ...after this long without one
+hotspot_name = "Tesseract-Setup"
+
+[system]
+state_dir = "data"       # remembers volume, mute, alarms (relative to this file)
+log_level = "INFO"
+
+[spotify]
+# Spotify on Tesseract itself ("play Blinding Lights by The Weeknd", "pause", "next song").
+# Needs Spotify Premium. `tesseract spotify setup` walks you through it and turns this on.
+enabled = false
+device_name = "Tesseract"     # what it's called in the Spotify app's device list
+volume = 0.6                  # music next to Franklin's voice (1 = as loud)
+duck = 0.15                   # music level while you talk to Franklin
+
+[local_llm]
+# A model on your own computer instead of the cloud for answers ("local mode").
+# Easiest: `tesseract local my-macbook.local` (finds LM Studio and its model) and
+# "Franklin, switch to local mode" / "use the cloud". Speech-to-text, the voice and
+# web search stay in the cloud either way.
+enabled = false
+url = ""                 # LM Studio: http://<computer>:1234/v1, Ollama: http://<computer>:11434/v1
+model = ""               # as the server lists it, e.g. "qwen/qwen3.5-9b"
+use_for = "fast"         # "fast": answers and routing; "all": the background agent too
+fallback = true          # computer asleep or away: use the cloud models until it's back
+
+# ═════════════════════════════════════════════════════════════════════════════
+#  AGENTS: who does the background jobs ("add this to my calendar", "what's on
+#  my to-do list"). Franklin says "On it!", the job runs, and the result is
+#  announced when it's done.
+#    * no [[agents]]  -> the built-in agent: the [thinking] model with a to-do list,
+#                        calendar and notes stored on the device, plus the web
+#    * one [[agents]] -> every background job goes to it; no need to name it
+#    * several        -> Franklin picks by `description`, or you name one
+#                        ("ask Hermes to ..."). "Let me talk to Hermes" opens a
+#                        direct line until you say "back to Franklin".
+#    [thinking] keep_builtin = true adds the built-in agent as one more choice.
+#
+#  type = "openai"        Any OpenAI-compatible /v1/chat/completions server:
+#                         Hermes Agent's API server, OpenClaw, Open WebUI, LiteLLM, ...
+#  type = "homeassistant" Home Assistant's conversation API (smart home control)
+#  type = "webhook"       POST {"task": "..."}; reply JSON {"text": "..."} or plain text (n8n, Zapier, ...)
+#  type = "command"       Run a program. {task} is one argv element; use {task_quoted}
+#                         inside ssh command strings (it is shell-quoted for you).
+#  The `description` is what Franklin reads to decide when to use the agent; be specific.
+# ═════════════════════════════════════════════════════════════════════════════
+
+# Hermes Agent (Nous Research): enable its API server on the machine running it:
+#   echo -e "API_SERVER_ENABLED=true\nAPI_SERVER_HOST=0.0.0.0\nAPI_SERVER_KEY=<secret>" >> ~/.hermes/.env
+#   hermes gateway
+# then run `tesseract hermes <its address>` (or `tesseract hermes https://<name>.<tailnet>.ts.net`
+# behind tailscale serve), or by hand: put the secret in Tesseract's .env as HERMES_API_KEY and uncomment:
+#
+# [[agents]]
+# name = "Hermes"
+# type = "openai"
+# url = "http://192.168.1.50:8642/v1"
+# api_key_env = "HERMES_API_KEY"
+# model = "hermes-agent"
+# description = "My personal AI agent on a server. It searches the web and has long-term memory. Use it for research or anything about what it knows about me."   # say only what its api_server toolset can really do
+# session = "tesseract"      # Hermes keeps one ongoing session for everything Tesseract asks
+# reasoning_effort = "low"   # per request; "" = Hermes's own setting. Lower = faster replies
+# service_tier = ""          # "priority" = faster, but uses the ChatGPT plan's limit faster
+# new_conversation_after_min = 15   # one running conversation ("move the second one to 4" works);
+#                                   # a fresh one after this long without a Hermes request; 0 = every job alone
+# timeout_s = 900
+
+# [[agents]]
+# name = "Home"
+# type = "homeassistant"
+# url = "http://homeassistant.local:8123"
+# api_key_env = "HOME_ASSISTANT_TOKEN"
+# description = "Controls the lights, thermostat, plugs and other smart home devices."
+# timeout_s = 15
+
+# [[agents]]
+# name = "Claude Code"
+# type = "command"
+# command = ["ssh", "me@workstation", "cd ~/projects && claude -p {task_quoted}"]
+# description = "A coding agent on my workstation that can read and change my code projects."
+# timeout_s = 1800
